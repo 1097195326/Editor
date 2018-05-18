@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!-- 
+    UI映射表，根据分辨率来打开不同的UI.
+    value id 代表MobileUIProtype里
+ -->
+
+
+<root type="UIPrototype">
+  
+  <uiInfo pid="300" desc="根据分辨率对应的UIprototypeID映射">
+
+    <ui key="0.46" value="151" pid="151" width="1242" height="2700" desc="iphonex的分辨率"/>
+
+    <ui key="0.49" value="154" pid="154" width="1242" height="2556" desc="S8的分辨率"/>
+
+    <ui key="0.50" value="155" pid="155" width="1224" height="2484" desc="0.5对应的分辨率"/>
+
+    <ui key="0.56" value="150" pid="150" width="1224" height="2204" desc="16:9对应的分辨率"/>
+
+    <ui key="0.565" value="150" pid="150" width="1224" height="2204" desc="16:9对应的分辨率"/>
+
+    <ui key="0.75" value="152" pid="152" width="1242" height="1656" desc="ipd分辨率"/>
+
+  </uiInfo>
+
+</root>

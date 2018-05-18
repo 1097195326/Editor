@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+    场景管理器需要根据这个配置文件打开不同平台的场景.
+    Platform pid 100=windows 101=mac 102=android 103=ios
+ -->
+
+<root type="ScenePrototype">
+
+  <Platform pid="100" name="windows">
+
+    <scene key="LoginLevel" value="/Game/PC_Scene/WindowsLoginLevel"/>
+    <scene key="MainLevel"  value="/Game/PC_Scene/WindowsMainLevel"/>
+    <scene key="DesignLevel" value="/Game/PC_Scene/WindowsDesignLevel"/>
+    <scene key="UpdateLevel" value="/Game/PC_Scene/WindowsUpdateLevel"/>
+    <scene key="WalkingLevel" value="/Game/PC_Scene/WindowsWalking"/>
+    <scene key="Demonstration" value="/Game/PC_Scene/WindowsDemonstration"/>
+
+  </Platform>
+
+
+
+  <Platform pid="101" name="mac">
+
+    <scene key="LoginLevel" value="/Game/Mobile_Scene/MobileLoginLevel"/>
+    <scene key="MainLevel"  value="/Game/Mobile_Scene/MobileMainLevel"/>
+    <scene key="DesignLevel" value="/Game/Mobile_Scene/MobileDesignLevel"/>
+    <scene key="UpdateLevel" value="/Game/Mobile_Scene/MobileUpdateLevel"/>
+    <scene key="Demonstration" value="/Game/Mobile_Scene/Demonstration"/>
+    <scene key="WalkingLevel" value="/Game/Mobile_Scene/MobileWalking"/>
+  </Platform>
+
+
+
+  <Platform pid="102" name="android">
+
+    <scene key="LoginLevel" value="/Game/Mobile_Scene/MobileLoginLevel"/>
+    <scene key="MainLevel"  value="/Game/Mobile_Scene/MobileMainLevel"/>
+    <scene key="DesignLevel" value="/Game/Mobile_Scene/MobileDesignLevel"/>
+    <scene key="UpdateLevel" value="/Game/Mobile_Scene/MobileUpdateLevel"/>
+    <scene key="Demonstration" value="/Game/Mobile_Scene/Demonstration"/>
+    <scene key="WalkingLevel" value="/Game/Mobile_Scene/MobileWalking"/>
+  </Platform>
+
+
+
+
+  <Platform pid="103" name="ios">
+
+    <scene key="LoginLevel" value="/Game/Mobile_Scene/MobileLoginLevel"/>
+    <scene key="MainLevel"  value="/Game/Mobile_Scene/MobileMainLevel"/>
+    <scene key="DesignLevel" value="/Game/Mobile_Scene/MobileDesignLevel"/>
+    <scene key="UpdateLevel" value="/Game/Mobile_Scene/MobileUpdateLevel"/>
+    <scene key="Demonstration" value="/Game/Mobile_Scene/Demonstration"/>
+    <scene key="WalkingLevel" value="/Game/Mobile_Scene/MobileWalking"/>
+  </Platform>
+  
+</root>

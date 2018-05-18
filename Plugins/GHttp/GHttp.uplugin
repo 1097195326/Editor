@@ -1,0 +1,25 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "GHttp",
+	"Description": "gx",
+	"Category": "Other",
+	"CreatedBy": "gx",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"EnabledByDefault": true,
+	"IsBetaVersion": false,
+	"Installed": true,
+	
+	"Modules": [
+		{
+			"Name": "GHttp",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}

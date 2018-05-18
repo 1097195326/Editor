@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+    HTTP 映射表.
+ -->
+
+<root type="HttpMappingPrototype">
+
+  <httpMapping pid="10" name="windows">
+
+    <mapping msgId="1001" channel="hosaHttp" url="member/login" dest="登陆"/>
+    <mapping msgId="1002" channel="hosaHttp" url="member/verifyIsNewMemberAndSmCode" dest="注册"/>
+    <mapping msgId="10022" channel="hosaHttp" url="member/register" dest="注册"/>
+    <mapping msgId="1003" channel="hosaHttp" url="member/login" dest="登出"/>
+    <mapping msgId="1004" channel="hosaHttp" url="member/smsSend" dest="获取验证码"/>
+    <mapping msgId="1005" channel="hosaHttp" url="member/smsSend" dest="重置密码获取验证码"/>
+    <mapping msgId="1006" channel="hosaHttp" url="member/findNewPassword" dest="重置密码"/>
+    <mapping msgId="1020" channel="hosaHttp" url="newSoft/searchCatTree" dest="软件设计分类数据"/>
+    <mapping msgId="1021" channel="hosaHttp" url="cms/SOFT_BIKINI_PAGE" dest="CMS首页泳装数据"/>
+    <mapping msgId="1023" channel="hosaHttp" url="cms/SOFT_SPORT_PAGE" dest="CMS首页运动数据"/>
+    <mapping msgId="1022" channel="hosaHttp" url="newSoft/style/data" dest="CMS Get 款数据"/>
+    
+    <mapping msgId="1099" channel="hosaHttp" url="" dest="CMS首页信息数据"/>
+    
+    <mapping msgId="2001" channel="hosaHttp" url="member/updateMemberNickName" dest="修改用户昵称"/>
+    <mapping msgId="2002" channel="hosaHttp" url="suit/share/page/data" dest="分享给微信好友"/>
+    <mapping msgId="2003" channel="Local" url="" dest="Request Shop Url"/>
+    <mapping msgId="2004" channel="hosaHttp" url="goods/shop/list/url" dest="获取H5路径"/>
+    <mapping msgId="2005" channel="hosaHttp" url="member/memberInfo" dest="获取昵称"/>
+    <mapping msgId="2006" channel="hosaHttp" url="suit/addTextilePrinting" dest="上传自定义花型"/>
+    <mapping msgId="2007" channel="hosaHttp" url="goods/detail" dest="面板信息"/>
+    <mapping msgId="2008" channel="hosaHttp" url="suit/share/page/data" dest="request shop order"/>
+    <mapping msgId="2009" channel="hosaHttp" url="goods/shop/list/url" dest="获取H5路径"/>
+
+
+	<mapping msgId="3001" channel="hosaHttp" url="app/update" dest="强制更新"/>
+
+
+    <!-- R数据相关的消息号 -->
+    <mapping msgId="4001" channel="hosaHttp" url="newSoft/system/style" dest="请求推荐款数据"/>
+
+    <mapping msgId="4002" channel="hosaHttp" url="newSoft/user/style" dest="请求用户款数据"/>
+    <mapping msgId="4102" channel="hosaHttp" url="newSoft/user/style" dest="主界面请求用户款数据"/>
+    <!-- T数据相关的消息号 -->
+    <mapping msgId="4003" channel="hosaHttp" url="newSoft/searchSuitList" dest="请求套件SuitT数据"/>
+    <mapping msgId="4004" channel="hosaHttp" url="newSoft/searchParList" dest="部位T数据"/>
+    <mapping msgId="4005" channel="hosaHttp" url="newSoft/searchComponentList" dest="部件T数据"/>
+    <mapping msgId="4006" channel="hosaHttp" url="newSoft/searchFabriLibrary" dest="面料库T数据"/>
+    <mapping msgId="4007" channel="hosaHttp" url="newSoft/fabric/batch" dest="面料T数据"/>
+    <mapping msgId="4008" channel="hosaHttp" url="newSoft/searchPanTongBatch" dest="花色库T数据"/>
+    <mapping msgId="4009" channel="hosaHttp" url="newSoft/searchPanTongBatch" dest="花色T数据"/>
+    <mapping msgId="4010" channel="hosaHttp" url="newSoft/searchSuitPattern" dest="花型T数据"/>
+    <mapping msgId="4011" channel="hosaHttp" url="newSoft/searchSuitSliceList" dest="部片T数据"/>
+    <mapping msgId="4012" channel="hosaHttp" url="newSoft/suitStitchList" dest="线迹T数据"/>
+    <mapping msgId="4013" channel="hosaHttp" url="newSoft/suitAccessoriesList" dest="辅料T数据"/>
+    <mapping msgId="4014" channel="hosaHttp" url="newSoft/style/details" dest="款详情"/>
+    <mapping msgId="4015" channel="local" url="" dest="返回设计场景的通知"/>
+    <mapping msgId="4016" channel="hosaHttp" url="newSoft/saveNewDesignStyle" dest="保存新的json数据"/>
+    <mapping msgId="4017" channel="hosaHttp" url="newSoft/searchSuitUserPattern" dest="获取用户花型"/>
+    <mapping msgId="4018" channel="hosaHttp" url="dataVersion/loadNewVersion" dest="获取最新版本xml路径"/>
+    <mapping msgId="4019" channel="DownloadHttp" url="" dest="下载xml内容"/>
+    <mapping msgId="4020" channel="Local" url="" dest="默认xml下载完成的通知"/>
+    <mapping msgId="4021" channel="DownloadHttp" url="" dest="下载xml内容"/>
+    <mapping msgId="4022" channel="Local" url="" dest="初始化服务器上的xml完成的回调"/>
+    <mapping msgId="4023" channel="Local" url="" dest="套件详情下载完成的通知"/>
+    <mapping msgId="4024" channel="hosaHttp" url="newSoft/textile/printing/list" dest="花型分页请求"/>
+    <mapping msgId="4025" channel="Local" url="" dest="花型分页请求完成广播"/>
+    <mapping msgId="4026" channel="hosaHttp" url="" dest="发送异常内容"/> 
+    <mapping msgId="4027" channel="hosaHttp" url="newSoft/searchPattern" dest="判断花型是否继承"/> 
+    <mapping msgId="4028" channel="Local" url="" dest="判断花型是否继承以后发送本地通知."/> 
+    <mapping msgId="4029" channel="Local" url="" dest="刷新渲染的函数."/> 
+
+  <httpMapping/>
+  
+</root>

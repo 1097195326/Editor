@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+
+ -->
+
+<root type="LanguagePrototype">
+
+  <Platform pid="110" name="">
+
+    <language key="key101" value="开始设计" asset=""/>
+    <language key="key102" value="取消" asset=""/>
+    <language key="key103" value="更新" asset=""/>
+	<language key="key104" value="正在检查版本信息..." asset=""/>
+	<language key="key105" value="本次下载" asset=""/>
+	<language key="key106" value="，速度" asset=""/>
+
+	<language key="key107" value="画质设置" asset=""/>
+	<language key="key108" value="语言设置" asset=""/>
+	<language key="key109" value="使用教程" asset=""/>
+	<language key="key110" value="建议反馈" asset=""/>
+	<language key="key111" value="关于我们" asset=""/>
+	<language key="key112" value="版本信息" asset=""/>
+	<language key="key113" value="退出" asset=""/>
+	<language key="key114" value="我的" asset=""/>
+	<language key="key115" value="画面质量低" asset=""/>
+	<language key="key116" value="画面质量中" asset=""/>
+	<language key="key117" value="画面质量高" asset=""/>
+	<language key="key118" value="简体中文" asset=""/>
+	<language key="key119" value="English" asset=""/>
+	<language key="key120" value="下单生产" asset=""/>
+	<language key="key121" value="好作品分享给大家" asset=""/>
+	<language key="key122" value="微信好友" asset=""/>
+	<language key="key123" value="朋友圈" asset=""/>
+	<language key="key124" value="您还可以立即下单" asset=""/>
+	<language key="key125" value="低画质" asset=""/>
+	<language key="key126" value="中画质" asset=""/>
+	<language key="key127" value="高画质" asset=""/>
+	<language key="key128" value="拍照" asset=""/>
+	<language key="key129" value="从相册中选择" asset=""/>
+	<language key="key130" value="取消" asset=""/>
+	<language key="key131" value="正在加载" asset=""/>
+	<language key="key132" value="款式数据异常" asset=""/>
+	<language key="key133" value="正在加载" asset=""/>
+	<language key="key134" value="款式" asset=""/>
+	<language key="key135" value="网络异常,请重试" asset=""/>
+	<language key="key136" value="清理缓存" asset=""/>
+	<language key="key137" value="用户昵称不能为空" asset=""/>
+	<language key="key138" value="网络连接异常,是否重试?" asset=""/>
+	<language key="key139" value="正在保存" asset=""/>
+	<language key="key140" value="自定义花型无法购买" asset=""/>
+    <language key="key141" value="是否保存款式?" asset=""/>
+    <language key="key142" value="是否保存到&quot;我的作品&quot;中" asset=""/>
+    <language key="key143" value="清理中" asset=""/>
+    <language key="key144" value="正在上传" asset=""/>
+    <language key="key145" value="正在赶工中,客官请稍候" asset=""/>
+    <language key="key146" value="是否保存本次修改内容" asset=""/>
+    <language key="key147" value="花型" asset=""/>
+    <language key="key148" value="颜色" asset=""/>
+    <language key="key149" value="面料" asset=""/>
+    <language key="key150" value="材质" asset=""/>
+    <language key="key151" value="下单请致电客服4000667088" asset=""/>
+    <language key="key152" value="正在下载款式数据..." asset=""/>
+	<language key="key153" value="正在加载您的作品..." asset=""/>
+	<language key="key154" value="正在下载款式资源，建议使用WIFI，土豪请随意..." asset=""/>
+	<language key="key155" value="请输入正确的手机号" asset=""/>
+</root>

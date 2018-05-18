@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Elias additions-->
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+  <!-- init section is always evaluated once per architecture -->
+
+  <gameActivityImportAdditions>
+    <insert>
+      import com.alibaba.sdk.android.oss.ClientConfiguration;
+      import com.alibaba.sdk.android.oss.ClientException;
+      import com.alibaba.sdk.android.oss.OSS;
+      import com.alibaba.sdk.android.oss.OSSClient;
+      import com.alibaba.sdk.android.oss.ServiceException;
+      import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
+      import com.alibaba.sdk.android.oss.callback.OSSProgressCallback;
+      import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
+      import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
+      import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
+      import com.alibaba.sdk.android.oss.model.GetObjectRequest;
+      import com.alibaba.sdk.android.oss.model.GetObjectResult;
+      import com.alibaba.sdk.android.oss.model.PutObjectRequest;
+      import com.alibaba.sdk.android.oss.model.PutObjectResult;
+      import com.oss.dachengshidai.OSSModuleNative;
+      import com.oss.dachengshidai.RxFileTool;
+      import com.oss.dachengshidai.RxPhotoTool;
+      import com.oss.dachengshidai.ImageUtil;
+      import java.io.FileOutputStream;
+      import java.io.FileInputStream;
+      import java.io.IOException;
+      import java.io.InputStream;
+      import android.content.Intent;
+      import android.graphics.Bitmap;
+      import android.net.Uri;
+      import android.view.WindowManager;
+      import android.os.Handler;
+      import android.os.Message;
+      import java.lang.ref.WeakReference;
+
+      <!--public class PhotoPathHandle implements:PhotoPathListener
+      {
+
+      @Override
+      public void imgPhotoPath(String imgPath) {
+
+      String imgFile =imgPath;
+      int[] dpiXY = RxPhotoTool.getImageInfo(new File(imgFile));
+      int [] resXY = ImageUtil.imageInfo(imgFile);
+
+      Bitmap icon = ImageUtil.buidIcon(imgFile,114);
+      Bitmap big = ImageUtil.buidBig(imgFile);
+
+      String path=getExternalFilesDir(null).getPath();
+      String iconPath =path+File.separator+ imgFile.substring(imgFile.lastIndexOf(File.separator)+1,imgFile.lastIndexOf("."))+"_icon"+imgFile.substring(imgFile.lastIndexOf("."));
+      String bigPath = path+ File.separator+ imgFile.substring(imgFile.lastIndexOf(File.separator)+1,imgFile.lastIndexOf("."))+"_big"+imgFile.substring(imgFile.lastIndexOf("."));
+      ImageUtil.saveMyBitmap(path,imgFile.substring(imgFile.lastIndexOf(File.separator)+1,imgFile.lastIndexOf("."))+"_icon",icon,imgFile.substring(imgFile.lastIndexOf(".")));
+      ImageUtil.saveMyBitmap(path,imgFile.substring(imgFile.lastIndexOf(File.separator)+1,imgFile.lastIndexOf("."))+"_big",big,imgFile.substring(imgFile.lastIndexOf(".")));
+      OSSModuleNative.onOpenPattern(iconPath,bigPath,dpiXY[0],dpiXY[1],resXY[0],resXY[1]);
+      }
+      }-->
+    </insert>
+  </gameActivityImportAdditions>
+
+  <resourceCopies>
+    <log text="Copying oss download files to staging"/>
+    <copyDir src="$S(PluginDir)/Java" dst="$S(BuildDir)/src/com/oss/dachengshidai" />
+    <copyFile src="$S(PluginDir)/../../Thirdparty/OSS/lib/Android/oss-android-sdk-2.4.4.jar" dst="$S(BuildDir)/libs/oss-android-sdk-2.4.4.jar" />
+    <copyFile src="$S(PluginDir)/../../Thirdparty/OSS/lib/Android/okio-1.10.0.jar" dst="$S(BuildDir)/libs/okio-1.10.0.jar" />
+    <copyFile src="$S(PluginDir)/../../Thirdparty/OSS/lib/Android/okhttp-3.4.1.jar" dst="$S(BuildDir)/libs/okhttp-3.4.1.jar" />
+    <copyFile src="$S(PluginDir)/../../Thirdparty/OSS/lib/Android/metadata-extractor-2.8.1.jar" dst="$S(BuildDir)/libs/metadata-extractor-2.8.1.jar" />
+    <copyFile src="$S(PluginDir)/../../Thirdparty/OSS/lib/Android/xmpcore-5.1.2.jar" dst="$S(BuildDir)/libs/xmpcore-5.1.2.jar" />
+  </resourceCopies>
+
+  <gameActivityClassAdditions>
+    <insert>
+      private static GameActivity mActivity;
+
+      private static OSS Android_OSS;
+      private static OSSCredentialProvider Andriod_CredentialProvider;
+
+      // OSS configure
+      private static String Android_Bucket;
+      private static String Android_EndPoint;
+      private static String Android_AccessKey;
+      private static String Android_AccessSecret;
+      // OSS
+      private static int ErrorCode_FileOperator = -1;
+      private static int ErrorCode_ClientException = -2;
+      private static int ErrorCode_unknown = -3;
+      private static int ErrorCode_Cannot_OpenFile = -4;
+      private static int ErrorCode_NoSuchFile = 404;
+      private MyHandler myHandler=new MyHandler(GameActivity.this);;
+
+
+      private class MyThree extends Thread{
+      private String imgFile;
+      private Context context;
+      @SuppressWarnings("unused")
+      public MyThree(String imgFile,Context context){
+      this.imgFile=imgFile;
+      this.context=context;
+      }
+      @Override
+      public void run() {
+      // TODO Auto-generated method stub
+      super.run();
+      String imgUrl= PhotoBitmapUtils.amendRotatePhoto(imgFile, context);
+      Message msg=new Message();
+      msg.obj=imgUrl;
+      myHandler.sendMessage(msg);
+      }
+
+      }
+      private class MyHandler extends Handler{
+      WeakReference&lt;GameActivity&gt;
+        mWeakReference;
+        public MyHandler(GameActivity activity){
+        this.mWeakReference=new WeakReference&lt;GameActivity&gt;
+          (activity);
+          }
+          @Override
+          public void handleMessage(Message msg) {
+          // TODO Auto-generated method stub
+          super.handleMessage(msg);
+          if (mWeakReference.get()!=null) {
+
+          if (msg.obj!=null) {
+          String imgFile=(String) msg.obj;
+
+          int[] dpiXY = RxPhotoTool.getImageInfo(new File(imgFile));
+          int [] resXY = ImageUtil.imageInfo(imgFile);
+
+          Bitmap icon = ImageUtil.buidIcon(imgFile,114);
+          Bitmap big = ImageUtil.buidBig(imgFile);
+
+          String path=getExternalFilesDir(null).getPath();
+          String iconPath =path+File.separator+ imgFile.substring(imgFile.lastIndexOf(File.separator)+1,imgFile.lastIndexOf("."))+"_icon"+imgFile.substring(imgFile.lastIndexOf("."));
+          String bigPath = path+ File.separator+ imgFile.substring(imgFile.lastIndexOf(File.separator)+1,imgFile.lastIndexOf("."))+"_big"+imgFile.substring(imgFile.lastIndexOf("."));
+          ImageUtil.saveMyBitmap(path,imgFile.substring(imgFile.lastIndexOf(File.separator)+1,imgFile.lastIndexOf("."))+"_icon",icon,imgFile.substring(imgFile.lastIndexOf(".")));
+          ImageUtil.saveMyBitmap(path,imgFile.substring(imgFile.lastIndexOf(File.separator)+1,imgFile.lastIndexOf("."))+"_big",big,imgFile.substring(imgFile.lastIndexOf(".")));
+          OSSModuleNative.onOpenPattern(iconPath,bigPath,dpiXY[0],dpiXY[1],resXY[0],resXY[1]);
+          OSSModuleNative.OSSLog("zhoujia:open camera file dialog Success"," return code "+ RESULT_OK);
+
+          }
+          }
+          }
+          }
+
+          // 初始化OSS
+          public static boolean AndroidOSS_InitOSS(String inEndiPoint, String inAk, String inAs,String inBucket){
+
+          Android_EndPoint =inEndiPoint;
+          Android_AccessKey = inAk;
+          Android_AccessSecret = inAs;
+          Android_Bucket = inBucket;
+
+          OSSModuleNative.OSSLog("OSS ","Begin init OSS CLIENT");
+          Andriod_CredentialProvider = new OSSPlainTextAKSKCredentialProvider(Android_AccessKey, Android_AccessSecret);
+          if (Andriod_CredentialProvider == null) {
+          return false;
+          }
+
+          ClientConfiguration conf = new ClientConfiguration();
+          conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒
+          conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
+          conf.setMaxConcurrentRequest(10); // 最大并发请求书，默认5个
+          conf.setMaxErrorRetry(10); // 失败后最大重试次数，默认2次
+          Android_Bucket = inBucket;
+          Android_OSS = new OSSClient(mActivity.getApplicationContext(), inEndiPoint, Andriod_CredentialProvider, conf);
+          OSSModuleNative.OSSLog("OSS ","oss client initialise success!");
+          return true;
+          }
+
+          // 下载文件
+          public static boolean AndroidOSS_DownloadFile(String inNetFile, String inLocalFile,int inFlag){
+          final String Android_DownloadFileName = inLocalFile;
+          final FileOutputStream Android_DownloadFile = AndroidOSS_OpenTmpFile(inLocalFile);
+          final int Android_DownloadFlag = inFlag;//用以标识本次下载的唯一ID
+          if (Android_DownloadFile == null){
+          OSSModuleNative.OSSLog("oss","Cannot open local file " + inLocalFile);
+          OSSModuleNative.onDownloadFailed(Android_DownloadFlag,ErrorCode_Cannot_OpenFile,"Cannot Create File.");
+          return false;
+          }
+
+          GetObjectRequest get = new GetObjectRequest(Android_Bucket, inNetFile);
+          get.setProgressListener(new OSSProgressCallback&lt;GetObjectRequest&gt;() {
+      @Override
+      public void onProgress(GetObjectRequest request, long currentSize, long totalSize) {
+      OSSModuleNative.onDownloadProgress(Android_DownloadFlag,currentSize,totalSize);
+      }
+      });
+
+      OSSModuleNative.OSSLog("OSS","DOWNLOAD  "+inNetFile);
+      OSSAsyncTask task = Android_OSS.asyncGetObject(get, new OSSCompletedCallback&lt;GetObjectRequest, GetObjectResult&gt;() {
+      @Override
+      public void onSuccess(GetObjectRequest request, GetObjectResult result) {
+      InputStream inputStream = result.getObjectContent();
+      int len;
+      int totalReadLen = 0;
+      byte[] buffer = new byte[2048];
+      try {
+      while ((len = inputStream.read(buffer)) != -1) {
+      totalReadLen += len;
+      Android_DownloadFile.write(buffer,0,len);
+      }
+      OSSModuleNative.OSSLog("OSS","download success. byte" + totalReadLen);
+      Android_DownloadFile.flush();
+      Android_DownloadFile.close();
+
+      File tmpFile = new File(Android_DownloadFileName +".tmp");
+      tmpFile.renameTo(new File(Android_DownloadFileName));
+      OSSModuleNative.OSSLog("OSS","download file finished "+ Android_DownloadFileName);
+      OSSModuleNative.onDownloadSuccess(Android_DownloadFlag);
+      } catch (IOException e) {
+      e.printStackTrace();
+      // 下载失败、或者io异常，需要删除临时文件，或者不完整文件
+      try {
+      Android_DownloadFile.close();
+      new File(Android_DownloadFileName).delete();
+      new File(Android_DownloadFileName+".tmp").delete();
+      OSSModuleNative.onDownloadFailed(Android_DownloadFlag,ErrorCode_FileOperator,"file write error");
+      } catch (IOException e1) {
+      e1.printStackTrace();
+      }
+      }
+      finally {
+      try {
+      inputStream.close();
+      } catch (IOException e) {
+      e.printStackTrace();
+      }
+      }
+      }
+
+      @Override
+      public void onFailure(GetObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+      // request exception
+      if (serviceException != null) {
+      // service side exception
+      OSSModuleNative.OSSLog("ErrorCode", serviceException.getErrorCode());
+      OSSModuleNative.OSSLog("RequestId", serviceException.getRequestId());
+      OSSModuleNative.OSSLog("HostId", serviceException.getHostId());
+      OSSModuleNative.OSSLog("RawMessage", serviceException.getRawMessage());
+      OSSModuleNative.onDownloadFailed(Android_DownloadFlag, serviceException.getErrorCode().equalsIgnoreCase("NoSuchKey") ? ErrorCode_NoSuchFile:ErrorCode_unknown,serviceException.getRawMessage());
+      }else if (clientExcepion != null) {
+      clientExcepion.printStackTrace();
+      OSSModuleNative.onDownloadFailed(Android_DownloadFlag,ErrorCode_ClientException,"Client Exception.");
+      }
+      else{
+      OSSModuleNative.onDownloadFailed(Android_DownloadFlag,ErrorCode_unknown,"Unknow");
+      }
+
+      new File(Android_DownloadFileName).delete();
+      new File(Android_DownloadFileName+".tmp").delete();
+      }
+      });
+      boolean ret = task.isCompleted();
+      return ret;
+      }
+
+      public static  boolean AndroidOSS_UploadFile(String inNetFile, String inLocalFile,int inFlag) {
+
+      final  String Android_UploadFileName = inLocalFile;
+      final int Android_UploadFlag = inFlag;
+      PutObjectRequest put = new PutObjectRequest(Android_Bucket, inNetFile, inLocalFile);
+      put.setProgressCallback(new OSSProgressCallback&lt;PutObjectRequest&gt;() {
+      @Override
+      public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
+      OSSModuleNative.onUploadProgress(Android_UploadFlag,currentSize,totalSize);
+      }
+      });
+
+      OSSAsyncTask task = Android_OSS.asyncPutObject(put, new OSSCompletedCallback&lt;PutObjectRequest, PutObjectResult&gt;() {
+      @Override
+      public void onSuccess(PutObjectRequest request, PutObjectResult result) {
+      OSSModuleNative.OSSLog("PutObject", "UploadSuccess");
+      OSSModuleNative.OSSLog("ETag", result.getETag());
+      OSSModuleNative.OSSLog("RequestId", result.getRequestId());
+      OSSModuleNative.onUploadSuccess(Android_UploadFlag);
+      }
+
+      @Override
+      public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+      if (serviceException != null) {
+      OSSModuleNative.OSSLog("ErrorCode", serviceException.getErrorCode());
+      OSSModuleNative.OSSLog("RequestId", serviceException.getRequestId());
+      OSSModuleNative.OSSLog("HostId", serviceException.getHostId());
+      OSSModuleNative.OSSLog("RawMessage", serviceException.getRawMessage());
+      OSSModuleNative.onUploadFailed(Android_UploadFlag,serviceException.getErrorCode().equalsIgnoreCase("NoSuchKey") ? ErrorCode_NoSuchFile:ErrorCode_unknown,serviceException.getRawMessage());
+      }else if (clientExcepion != null) {
+      clientExcepion.printStackTrace();
+      OSSModuleNative.onUploadFailed(Android_UploadFlag,ErrorCode_ClientException,"Client Exception.");
+      }
+      else{
+      OSSModuleNative.onUploadFailed(Android_UploadFlag,ErrorCode_unknown,"Unknow");
+      }
+      }
+      });
+      return task.isCompleted();
+      }
+
+      public static String AndroidOSS_GetPath(String inFileName){
+      int index = inFileName.lastIndexOf('/');
+      if (index != -1)
+      {
+      return inFileName.substring(0,index);
+      }
+      OSSModuleNative.OSSLog("OSS ","Can not get file Path");
+      return ".";
+      }
+
+      public static boolean Android_CreateDir(String inFolderName){
+      try {
+      File destDir = new File(inFolderName);
+      if (!destDir.exists()) {
+      try {
+      OSSModuleNative.OSSLog("OSS ","ready to make new folder" + inFolderName);
+      if (!destDir.mkdirs()) {
+      OSSModuleNative.OSSLog("OSS ","make new folder" + inFolderName + "failed");
+      } else {
+      OSSModuleNative.OSSLog("OSS ","make new folder" + inFolderName + "success");
+      return true;
+      }
+      } catch (Exception e) {
+      OSSModuleNative.OSSLog("OSS ","make new folder" + inFolderName + "failed");
+      e.printStackTrace();
+      }
+      }
+      }
+      catch (Exception e) {
+      OSSModuleNative.OSSLog("OSS ","check folder is exist " + inFolderName + "failed");
+      e.printStackTrace();
+      }
+      return true;
+      }
+
+      public static FileOutputStream AndroidOSS_OpenTmpFile(String inFullFileName){
+      FileOutputStream retOs = null;
+      String folderPath = AndroidOSS_GetPath(inFullFileName);
+      Android_CreateDir(folderPath);
+      try{
+      File tmpFile = new File(inFullFileName+".tmp");
+      if (tmpFile.exists())
+      {
+      tmpFile.delete();
+      }
+      tmpFile.createNewFile();
+      retOs = new FileOutputStream(tmpFile,true);
+      }
+      catch (Exception e){
+      e.printStackTrace();
+      }
+      return retOs;
+      }
+
+      //OpenURL
+      public static boolean Android_OpenURL(String URL){
+      OSSModuleNative.OSSLog("OSS ","Android Open URL:" + URL );
+      return true;
+      }
+
+      public static boolean Anroid_OpenLocalImage()
+      {
+      PhotoUtils.getPhotoUtils(mGContext).openPic();
+      return true;
+      }
+
+      public static boolean Android_CopyTo(String inSrc, String inTar)
+      {
+      FileInputStream fis = null;
+      FileOutputStream fos = null;
+      try {
+      File srcFile = new File(inSrc) ;
+      if (srcFile.exists())
+      {
+      String folderPath = AndroidOSS_GetPath(inTar);
+      Android_CreateDir(folderPath);
+      fis = new FileInputStream(srcFile);
+      fos = new FileOutputStream(new File(inTar));
+      if (fos != null)
+      {
+      byte[] buf = new byte[4096];
+      int i;
+      while ((i = fis.read(buf)) != -1) {
+      fos.write(buf, 0, i);
+      }
+      fis.close();
+      fos.close();
+      OSSModuleNative.OSSLog("FILE ","FILE cpy success  " + inTar);
+      }
+      }
+      else
+      {
+      OSSModuleNative.OSSLog("FILE ","FILE is NOT exist " + inSrc);
+      }
+      }
+      catch (Exception e) {
+      e.printStackTrace();
+      }
+      return true;
+      }
+
+
+      <!--@Override
+      public void imgPhotoPath(String imgPath)
+      {
+      String imgFile =imgPath;
+      int[] dpiXY = RxPhotoTool.getImageInfo(new File(imgFile));
+      int [] resXY = ImageUtil.imageInfo(imgFile);
+
+      Bitmap icon = ImageUtil.buidIcon(imgFile,114);
+      Bitmap big = ImageUtil.buidBig(imgFile);
+
+      String path=getExternalFilesDir(null).getPath();
+      String iconPath =path+File.separator+ imgFile.substring(imgFile.lastIndexOf(File.separator)+1,imgFile.lastIndexOf("."))+"_icon"+imgFile.substring(imgFile.lastIndexOf("."));
+      String bigPath = path+ File.separator+ imgFile.substring(imgFile.lastIndexOf(File.separator)+1,imgFile.lastIndexOf("."))+"_big"+imgFile.substring(imgFile.lastIndexOf("."));
+      ImageUtil.saveMyBitmap(path,imgFile.substring(imgFile.lastIndexOf(File.separator)+1,imgFile.lastIndexOf("."))+"_icon",icon,imgFile.substring(imgFile.lastIndexOf(".")));
+      ImageUtil.saveMyBitmap(path,imgFile.substring(imgFile.lastIndexOf(File.separator)+1,imgFile.lastIndexOf("."))+"_big",big,imgFile.substring(imgFile.lastIndexOf(".")));
+      OSSModuleNative.onOpenPattern(iconPath,bigPath,dpiXY[0],dpiXY[1],resXY[0],resXY[1]);
+      }-->
+    </insert>
+  </gameActivityClassAdditions>
+
+  <gameActivityOnCreateAdditions>
+    <insert>
+      mActivity = this;
+      getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    </insert>
+  </gameActivityOnCreateAdditions>
+
+  <!-- <gameActivityOnPauseAdditions>
+    <insert>
+    </insert>
+  </gameActivityOnPauseAdditions>-->
+
+  
+  <gameActivityOnActivityResultAdditions>
+    <insert>
+      <!--if (data==null) 
+      {
+          return;
+      }-->
+      <!--OSSModuleNative.OSSLog("zhoujia:requestCode==",requestCode);
+      OSSModuleNative.OSSLog("zhoujia:resultCode==",resultCode);-->
+      if (requestCode == PhotoUtils.REQUEST_CODE_PICK_IMAGE)
+      {
+      // 相机
+      if (resultCode == RESULT_OK)
+      {
+   
+      new MyThree(AppUtile.getImageUri(),mGContext).start();
+      }
+      else
+      {
+      //选择图片失败.
+      OSSModuleNative.onOpenPattern("","",-1,-1,0,0);
+      OSSModuleNative.OSSLog("zhoujia:open camera file dialog failed........ "," return code "+ RESULT_OK);
+      }
+      }
+      else if (requestCode == PhotoUtils.FILECHOOSER_RESULTCODE)
+      {
+      // 相册
+      if (resultCode == RESULT_OK)
+      {
+      if (PhotoUtils.getPhotoUtils(mGContext).hasSdcard())
+      {
+      String imgFile = RxPhotoTool.getImageAbsolutePath(mGContext,data.getData());
+      new MyThree(imgFile,mGContext).start();
+
+      }
+      }
+      else
+      {
+      //选择文件失败.
+      OSSModuleNative.onOpenPattern("","",-1,-1,0,0);
+      OSSModuleNative.OSSLog("zhoujia:open system file dialog failed........ "," return code "+ RESULT_OK);
+      }
+      }
+
+      
+    </insert>
+  </gameActivityOnActivityResultAdditions>
+
+  <androidManifestUpdates>
+    <addPermission android:name="android.permission.INTERNET"></addPermission>
+    <addPermission android:name="android.permission.ACCESS_NETWORK_STATE"></addPermission>
+    <addPermission android:name="android.permission.ACCESS_WIFI_STATE"></addPermission>
+    <addPermission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></addPermission>
+    <addPermission android:name="android.permission.READ_EXTERNAL_STORAGE"></addPermission>
+    <addPermission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"></addPermission>
+    <addPermission android:name="android.permission.WAKE_LOCK"></addPermission>
+
+    <setElement result="newshipei" value="meta-data"/>
+    <addAttribute tag="$newshipei" name="android:name" value="android.max_aspect" />
+    <addAttribute tag="$newshipei" name="android:value" value="2.1" />
+    <addElement tag="application" name="newshipei" />
+  </androidManifestUpdates>
+
+</root>

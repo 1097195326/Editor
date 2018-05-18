@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Elias additions-->
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+  <!-- init section is always evaluated once per architecture -->
+  <prebuildCopies>
+    <log text="Copying FalyLibrary directory to staging before build"/>
+    <copyDir src="$S(PluginDir)/../../Thirdparty/FalyLibrary"
+          dst="$S(BuildDir)/JavaLibs/FalyLibrary" />
+  </prebuildCopies>
+
+  <gameActivityImportAdditions>
+    <insert>
+      import com.example.falylibrary.*;
+      import com.example.falylibrary.utile.*;
+      import com.example.falylibrary.db.*;
+      import com.example.falylibrary.wxapi.*;
+      import cn.sharesdk.framework.Platform;
+      import cn.sharesdk.framework.PlatformActionListener;
+      import cn.sharesdk.framework.ShareSDK;
+      import cn.sharesdk.wechat.friends.Wechat;
+      import cn.sharesdk.wechat.moments.WechatMoments;
+      import java.io.File;
+      import java.util.HashMap;
+      import com.mob.MobSDK;
+
+    </insert>
+  </gameActivityImportAdditions>
+
+
+  <gameActivityClassAdditions>
+    <insert>
+      private static GameActivity mHaoshaActivity;
+
+      private static Context mGContext;
+
+      public native void OnOpenCameraImagePath(String _imagePath);
+
+      public static boolean Anroid_OpenWebview(String _Url)
+      {
+      AppLibrary.getInstence(mHaoshaActivity).goWeb(_Url);
+      return true;
+      }
+
+      public static boolean Android_InitLibrary(String _key,String _value)
+      {
+      AppLibrary.getInstence(mHaoshaActivity).initLibrary(_key,_value);
+      return true;
+      }
+
+      public static boolean Android_WeChatMoments(String _strTitle,String _strText,String _imgUrl,String _strUrl)
+      {
+      AppLibrary.getInstence(mHaoshaActivity).weChatMoments(_strTitle,_strText,_imgUrl,_strUrl);
+      return true;
+      }
+
+      public static boolean Android_WeChatFavorite(String _strTitle,String _strText,String _imgUrl,String _strUrl)
+      {
+      AppLibrary.getInstence(mHaoshaActivity).weChatFavorite(_strTitle,_strText,_imgUrl,_strUrl);
+      return true;
+      }
+
+      public static boolean Android_OpenLocalWeb(String _strUrl)
+      {
+      AppLibrary.getInstence(mHaoshaActivity).openIntentUri(_strUrl);
+      return true;
+      }
+
+      public static boolean Android_FlipImage(String _inFilePath,String _outFilePath)
+      {
+
+      AppUtile.toPictureMirror(_inFilePath,_outFilePath);
+      OSSModuleNative.OSSLog("Android_FlipImage:",_inFilePath);
+      return true;
+      }
+
+      public static boolean Android_OpenCamera()
+      {
+      PhotoUtils.getPhotoUtils(mGContext).takePicture();
+      return true;
+      }
+
+      //获取手机型号 返回值字符串
+      public static String Android_GetSystemModel()
+      {
+      OSSModuleNative.OSSLog("GetSystemModel:",SystemUtil.getSystemModel());
+      return SystemUtil.getSystemModel();
+      }
+
+      //获取手机版本 返回值字符串
+      public static String Android_GetSystemVersion()
+      {
+      OSSModuleNative.OSSLog("Android_GetSystemVersion:",SystemUtil.getSystemVersion());
+      return SystemUtil.getSystemVersion();
+      }
+
+      //获取拦截到的错误信息
+      public static String Android_GetErrorInfoDesgin()
+      {
+      OSSModuleNative.OSSLog("Android_GetErrorInfoDesgin:",AppLibrary.getInstence(mHaoshaActivity).getErrorInfoDesgin());
+      return AppLibrary.getInstence(mHaoshaActivity).getErrorInfoDesgin();
+      }
+
+      //清除拦截到的错误信息
+      public static void Android_CleanErrorInfoDesgin()
+      {
+      OSSModuleNative.OSSLog("Android_CleanErrorInfoDesgin:","Android_CleanErrorInfoDesgin");
+
+      AppLibrary.getInstence(mHaoshaActivity).cleanErrorInfoDesgin();
+      }
+
+      //初始化异常拦截方法
+      public static void Android_InitErrorInfoDesgin()
+      {
+      OSSModuleNative.OSSLog("Android_InitErrorInfoDesgin:","Android_InitErrorInfoDesgin");
+
+      CrashHandler.getInstance().init(mHaoshaActivity);
+      }
+
+      //初始化异常拦截App信息.
+      public static void Android_InitException(String  _appVersion, String _appAcount, String _apiVersion)
+      {
+
+      OSSModuleNative.OSSLog("_appVersion:",_appVersion);
+      OSSModuleNative.OSSLog("_appAcount:",_appAcount);
+      OSSModuleNative.OSSLog("_apiVersion:",_apiVersion);
+      //app版本
+      Constant.AppVersion=_appVersion;
+      //用户id
+      Constant.AppAccount=_appAcount;
+      //api版本
+      Constant.ApiVersion=_apiVersion;
+      }
+
+      public static boolean Android_ConvertToJPG(String _pngFilePath,String _jpgFilePath)
+      {
+      AppUtile.convertToJpg(_pngFilePath, _jpgFilePath);
+      return true;
+      }
+
+      public static boolean Android_WeChatFavorite()
+      {
+      ParallelViewHelper mParallelViewHelper= new ParallelViewHelper(mHaoshaActivity);
+      mParallelViewHelper.start();
+      mParallelViewHelper.setSensorListener(new ParallelViewHelper.ISensorListener() {
+      @Override
+      public void onGyroScopeChange(int x, int y) {
+      //x x轴的值变化
+      //y y轴的值变化
+
+      }
+      });
+      return true;
+      }
+    </insert>
+  </gameActivityClassAdditions>
+
+  <gameActivityOnCreateAdditions>
+    <insert>
+      mHaoshaActivity = this;
+      mGContext = this;
+    </insert>
+  </gameActivityOnCreateAdditions>
+
+  <!-- <gameActivityOnPauseAdditions>
+    <insert>
+    </insert>
+  </gameActivityOnPauseAdditions>-->
+
+  <!--<gameActivityOnActivityResultAdditions>
+    <insert>
+      @Override
+      public void imgPhotoPath(String imgPath) {
+      OnOpenCameraImagePath(imgPath);
+      }
+    </insert>
+  </gameActivityOnActivityResultAdditions>-->
+
+  <androidManifestUpdates>
+
+    <addPermission android:name="android.permission.CALL_PHONE"></addPermission>
+    <addPermission android:name="android.permission.READ_PHONE_STATE"></addPermission>
+    
+    
+    <addPermission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <addPermission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <addPermission android:name="android.permission.GET_TASKS" />
+    <addPermission android:name="android.permission.INTERNET" />
+    <addPermission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <addPermission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <addPermission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <addPermission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <addPermission android:name="android.permission.READ_PHONE_STATE" />
+    <addPermission android:name="android.permission.READ_PHONE_STATE" />
+    <addPermission android:name="android.permission.CALL_PHONE" />
+    <addPermission android:name="android.permission.ACCESS_NETWORK_STATE"></addPermission>
+    <addPermission android:name="android.permission.ACCESS_WIFI_STATE"></addPermission>
+    <addPermission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></addPermission>
+    <addPermission android:name="android.permission.READ_EXTERNAL_STORAGE"></addPermission>
+    <addPermission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"></addPermission>
+    <addPermission android:name="android.permission.CAMERA" />
+
+    <addPermission android:name="android.permission.INTERNET" />
+    <addPermission android:name="android.permission.READ_PHONE_STATE" />
+    <addPermission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <addPermission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <addPermission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <addPermission android:name="android.permission.WAKE_LOCK" />
+    <addPermission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <addPermission android:name="android.permission.VIBRATE" />
+    <addPermission android:name="android.permission.GET_TASKS" /> 
+    <addFeature android:name="android.hardware.camera" /> 
+    <addFeature android:name="android.hardware.camera.autofocus" />
+    
+    <setElement result="WebH5Activity" value="activity" />
+    <addAttribute tag="$WebH5Activity" name="android:name" value="com.example.falylibrary.WebH5Activity" />
+    <addAttribute tag="$WebH5Activity" name="android:screenOrientation" value="portrait" />
+    <addAttribute tag="$WebH5Activity" name="android:theme" value="@android:style/Theme.NoTitleBar" />
+    <addElement tag="application" name="WebH5Activity" />
+
+  </androidManifestUpdates>
+
+</root>

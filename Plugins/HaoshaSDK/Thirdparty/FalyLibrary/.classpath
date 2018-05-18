@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+	<classpathentry kind="lib" path="libs/alipaySdk-20170725.jar"/>
+	<classpathentry kind="lib" path="libs/MobCommons-2017.0914.1125.jar"/>
+	<classpathentry kind="lib" path="libs/MobTools-2017.0914.1125.jar"/>
+	<classpathentry kind="lib" path="libs/ShareSDK-Wechat-3.1.0.jar"/>
+	<classpathentry kind="lib" path="libs/ShareSDK-Core-3.1.0.jar"/>
+	<classpathentry kind="lib" path="libs/ShareSDK-Wechat-Core-3.1.0.jar"/>
+	<classpathentry kind="lib" path="libs/ShareSDK-Wechat-Favorite-3.1.0.jar"/>
+	<classpathentry kind="lib" path="libs/ShareSDK-Wechat-Moments-3.1.0.jar"/>
+	<classpathentry kind="lib" path="libs/fastjson-1.2.46.jar"/>
+	<classpathentry kind="lib" path="libs/commons-lang-2.6.jar"/>
+	<classpathentry kind="output" path="bin/classes"/>
+</classpath>

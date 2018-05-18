@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+    HTTP 映射表.
+ -->
+
+<root type="SchedulerMapping">
+
+  <httpMapping pid="20">
+
+    <mapping key="design" value="OpenDesignSceneScheduler" dest="进入登录场景."/>
+    
+    <mapping key="h5" value="OpenH5Scheduler" dest="打开H5"/>
+
+  <httpMapping/>
+  
+</root>

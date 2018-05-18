@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+
+<!-- 
+		设置项目的配置文件.
+ -->
+
+<root type="ServerPrototype">
+
+	<server pid="80" desc="Windows Http.">
+		
+		<param key="platform"      value="WINDOWS"             desc="当前运行的平台"/>
+
+		<param key="serverUrl"     value="http://47.94.153.43:9090/"           desc="http url"/>
+
+		<param key="apiVersion"    value="1.0.5"           desc="api版本"/>
+
+		<param key="appType"       value="FAFA_SOFT_3D"    desc="appType"/>
+
+		<param key="channel"       value="FAFA"            desc="channel"/>
+
+		<param key="source"        value="FAFA_SOFT_3D"    desc="source"/>
+
+		<param key="shopCode"      value="FAFA"            desc="shopCode"/>
+
+		<param key="os"            value="WINDOWS"                desc="os"/>
+
+		<param key="version"       value="1.0.0"                desc="version"/>
+
+		<param key="errorHttpUrl"       value="http://47.94.153.43:8090/exception/log"                desc="异常url"/>
+
+		<param key="sharedHttpUrl"       value="http://test-h5.fafaapp.com/"                desc="异常url"/>
+
+	</server> 
+
+	<server pid="81" desc="ios HTTP.">
+		
+		<param key="platform"      value="IOS"             desc="当前运行的平台"/>
+
+		<param key="serverUrl"     value="http://47.94.153.43:9090/"           desc="http url"/>
+
+		<param key="apiVersion"    value="1.0.5"           desc="api版本"/>
+
+		<param key="appType"       value="FAFA_SOFT_APP"    desc="appType"/>
+
+		<param key="channel"       value="FAFA"            desc="channel"/>
+
+		<param key="source"        value="FAFA_SOFT_APP_IOS"    desc="source"/>
+
+		<param key="shopCode"      value="FAFA"            desc="shopCode"/>
+
+		<param key="os"            value="IOS"                desc="os"/>
+
+		<param key="version"       value="1.0.0"                desc="version"/>
+
+		<param key="errorHttpUrl"       value="http://47.94.153.43:8090/exception/log"                desc="异常url"/>
+
+		<param key="sharedHttpUrl"       value="http://test-h5.fafaapp.com/"                desc="异常url"/>
+
+	</server> 
+
+	<server pid="82" desc="android Http.">
+		
+		<param key="platform"      value="ANDROID"             desc="当前运行的平台"/>
+
+		<param key="serverUrl"     value="http://47.94.153.43:9090/"           desc="http url"/>
+
+		<param key="apiVersion"    value="1.0.5"           desc="api版本"/>
+
+		<param key="appType"       value="FAFA_SOFT_APP"    desc="appType"/>
+
+		<param key="channel"       value="FAFA"            desc="channel"/>
+
+		<param key="source"        value="FAFA_SOFT_APP_ANDROID"    desc="source"/>
+
+		<param key="shopCode"      value="FAFA"            desc="shopCode"/>
+
+		<param key="os"            value="ANDROID"                desc="os"/>
+
+		<param key="version"       value="1.0.0"                desc="version"/>
+
+		<param key="errorHttpUrl"       value="http://47.94.153.43:8090/exception/log"                desc="异常url"/>
+
+		<param key="sharedHttpUrl"       value="http://test-h5.fafaapp.com/"                desc="异常url"/>
+
+	</server> 
+
+	<oss pid="89" desc="oss相关服务器.">
+		
+		<param key="AosEndPoint"         value="http://oss-cn-beijing.aliyuncs.com" desc="aosEndPoint"/>
+
+		<param key="AosAccessKeyID"      value="LTAIEPLr9NDvlDkn" desc="aosAccessKeyID"/>
+
+		<param key="AosAccessKeySecret"  value="uno78s4cC1If8PySz2y6hBEAiKgsmB" desc="AosAccessKeySecret"/>
+
+		<param key="AosBucket"           value="fafa-3d-test" desc="AosBucket"/>
+
+	</oss>  
+
+</root>    
